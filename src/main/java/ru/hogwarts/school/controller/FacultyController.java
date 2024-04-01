@@ -40,20 +40,16 @@ public class FacultyController {
     }
     @DeleteMapping("{id}")
     public ResponseEntity <Faculty> deleteFaculty(@PathVariable long id){
-        Faculty deletedFaculty = service.deleteFaculty(id);
-        if (deletedFaculty == null){
-            ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedFaculty);
+        return ResponseEntity.ok().build();
     }
-    @GetMapping("color")
-    public ResponseEntity <Collection<Faculty>> findColor(@RequestParam(required = false) String color){
-        if (color.isBlank()){
-            return ResponseEntity.ok(service.getColor(color));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
-
-    }
+//    @GetMapping("color")
+//    public ResponseEntity <Collection<Faculty>> findColor(@RequestParam(required = false) String color){
+//        if (color.isBlank()){
+//            return ResponseEntity.ok(service.getColor(color));
+//        }
+//        return ResponseEntity.ok(Collections.emptyList());
+//
+//    }
 
 
 }

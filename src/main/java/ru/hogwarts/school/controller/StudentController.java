@@ -42,15 +42,14 @@ public class StudentController {
     }
     @DeleteMapping("{id}")
     public ResponseEntity <Student> deleteStudent(@PathVariable long id){
-        Student deletedStudent = service.deleteStudent(id);
-        return ResponseEntity.ok(deletedStudent);
+        return ResponseEntity.ok().build();
     }
-    @GetMapping("color")
-    public ResponseEntity<Collection<Student>> getByAge(@RequestParam int age){
-        if(age > 0){
-            return ResponseEntity.ok(service.findAge(age));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
-
-    }
+//    @GetMapping("age")
+//    public ResponseEntity<Collection<Student>> getByAge(@RequestParam int age){
+//        if(age > 0){
+//            return ResponseEntity.ok(service.findAge(age));
+//        }
+//        return ResponseEntity.ok(Collections.emptyList());
+//
+//    }
 }
