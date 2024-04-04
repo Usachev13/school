@@ -17,7 +17,8 @@ public class Faculty {
         this.name = name;
         this.color = color;
     }
-    public Faculty(){
+
+    public Faculty() {
 
     }
 

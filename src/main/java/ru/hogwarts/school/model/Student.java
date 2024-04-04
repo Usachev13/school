@@ -18,9 +18,12 @@ public class Student {
         this.name = name;
         this.age = age;
     }
-    public Student(){
 
-    };
+    public Student() {
+
+    }
+
+    ;
 
     public long getId() {
         return id;

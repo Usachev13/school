@@ -13,31 +13,23 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-//    public StudentService(StudentRepository studentRepository) {
-//        this.studentRepository = studentRepository;
-//    }
 
-    public Student createStudent(Student student){
+    public Student createStudent(Student student) {
         return studentRepository.save(student);
     }
-    public Student findStudent(long id){
+
+    public Student findStudent(long id) {
         return studentRepository.findById(id).get();
     }
-    public Student editStudent(Student student){
+
+    public Student editStudent(Student student) {
         return studentRepository.save(student);
     }
-    public void deleteStudent(long id){
+
+    public void deleteStudent(long id) {
         studentRepository.deleteById(id);
     }
 
-//    public Collection<Student> findAge(int age){
-//        ArrayList<Student>result = new ArrayList<>();
-//        for (Student student: students.values()){
-//            if (student.getAge() == age){
-//                result.add(student);
-//            }
-//        }
-//        return result;
-//    }
+
 }
 
