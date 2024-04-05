@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
@@ -30,6 +33,11 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-
+    public Collection<Student> getAllByAge(int age){
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getAge() == age)
+                .collect(Collectors.toList());
+    }
 }
 
