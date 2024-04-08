@@ -4,10 +4,12 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("faculty")
@@ -47,12 +49,14 @@ public class FacultyController {
         service.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("color")
-    public ResponseEntity <Collection<Faculty>> findColor(@RequestParam(required = false) String color){
-        if (!color.isBlank()){
-            return ResponseEntity.ok(service.getColor(color));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
+    @GetMapping("color_or_name")
+    public ResponseEntity <Collection<Faculty>> findColor(@RequestParam(required = false) String color, @RequestParam(required = false)String name){
+        return ResponseEntity.ok(service.getColorOrName(color, name));
 
+    }
+    @GetMapping("{id}/students")
+    public List<Student> getStudentByFaculty(Long id){
+        return service.findFaculty(id).getStudents();
+        
     }
 }
