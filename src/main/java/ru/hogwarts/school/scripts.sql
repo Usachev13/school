@@ -2,7 +2,7 @@ select * from Student;
 
 select name from student;
 
-select * from student where name ILIKE '%о%';
+select * from student where name ilike  '%э%';
 
 select * from student where age < id;
 
