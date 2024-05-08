@@ -59,7 +59,7 @@ public class StudentService {
     }
 
     public Avatar findAvatar(Long studentId) {
-        return AvatarRepository.findByStudentId(studentId).orElseThrow();
+        return avatarRepository.findByStudentId(studentId).orElseThrow();
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
