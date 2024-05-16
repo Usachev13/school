@@ -25,9 +25,13 @@ public class FacultyController {
         Faculty newFaculty = service.createFaculty(faculty);
         return ResponseEntity.ok(newFaculty);
     }
+    @GetMapping
+    public List<Faculty> getAll(){
+        return service.getAll();
+    }
 
     @GetMapping("{id}")
-    public ResponseEntity<Faculty> findFaculty(@PathVariable long id) {
+    public ResponseEntity<Faculty> findFaculty(@PathVariable Long id) {
         Faculty findedFaculty = service.findFaculty(id);
         if (findedFaculty == null) {
             ResponseEntity.notFound().build();

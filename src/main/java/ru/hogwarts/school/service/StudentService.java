@@ -2,8 +2,12 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.exceptions.NotFoundObject;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -13,10 +17,13 @@ import ru.hogwarts.school.repository.StudentRepository;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class StudentService {
@@ -36,7 +43,7 @@ public class StudentService {
     }
 
     public Student findStudent(long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElseThrow(NotFoundObject::new);
     }
 
     public Student editStudent(Student student) {
@@ -52,6 +59,9 @@ public class StudentService {
                 .stream()
                 .filter(student -> student.getAge() == age)
                 .collect(Collectors.toList());
+    }
+    public List<Student> getAll(){
+        return new ArrayList<>(studentRepository.findAll());
     }
 
     public Collection<Student> findByAgeBetween(int min, int max) {

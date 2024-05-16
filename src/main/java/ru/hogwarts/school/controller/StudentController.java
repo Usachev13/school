@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("student")
@@ -37,12 +38,16 @@ public class StudentController {
         Student createdStudent = service.createStudent(student);
         return ResponseEntity.ok(createdStudent);
     }
+    @GetMapping
+    public List<Student> getAll(){
+        return service.getAll();
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<Student> findStudent(@PathVariable long id) {
         Student findedStudent = service.findStudent(id);
         if (findedStudent == null) {
-            ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(findedStudent);
     }
