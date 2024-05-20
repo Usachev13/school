@@ -110,12 +110,13 @@ public class FacultyControllerWebMvcTest {
                         new Faculty(1L, "name1", "color1"),
                         new Faculty(2L, "name2", "color2")));
 
-        mvc.perform(MockMvcRequestBuilders.get("/faculty/byColorAndName?name=name1&color=color2"))
+        mvc.perform(MockMvcRequestBuilders.get("/faculty/color_or_name?color=color1&name=name2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("name1"))
                 .andExpect(jsonPath("$[0].color").value("color1"))
-                .andExpect(jsonPath("$[1].name").value("name2"))
-                .andExpect(jsonPath("$[1].color").value("color2"));
+                .andExpect(jsonPath("$[0].name").value("name1"))
+                .andExpect(jsonPath("$[1].color").value("color2"))
+                .andExpect(jsonPath("$[1].name").value("name2"));
+
     }
 
     @Test
@@ -125,12 +126,12 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyRepository.findById(1L)).thenReturn(Optional.of(f));
 
-        mvc.perform(MockMvcRequestBuilders.get("/faculty/students?facultyId=1"))
+        mvc.perform(MockMvcRequestBuilders.get("/faculty?id=1/students"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("s1"))
-                .andExpect(jsonPath("$[0].age").value(10));
+                .andExpect(jsonPath("$.name").value("s1"))
+                .andExpect(jsonPath("$.age").value(10));
 
-        mvc.perform(MockMvcRequestBuilders.get("/faculty/students?facultyId="))
+        mvc.perform(MockMvcRequestBuilders.get("/faculty?id=/students"))
                 .andExpect(status().is(400));
     }
 }

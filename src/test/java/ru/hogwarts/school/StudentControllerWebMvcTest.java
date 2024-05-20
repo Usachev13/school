@@ -114,7 +114,7 @@ public class StudentControllerWebMvcTest {
                         new Student(1L, "name", 21),
                         new Student(2L, "name", 25)));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/byAge?min=19&max=23"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/betweenAge?min=19&max=23"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("name"))
                 .andExpect(jsonPath("$.age").value(21));
@@ -127,12 +127,12 @@ public class StudentControllerWebMvcTest {
         f1.setFaculty(new Faculty(1L,"faculty","color"));
         when(studentRepository.findById(1L)).thenReturn(Optional.of(f1));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/faculty?studentId=1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/findFaculty?id=1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("faculty"))
                 .andExpect(jsonPath("$.color").value("color"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/faculty?studentId="))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/findFaculty?id="))
                 .andExpect(status().is(400));
     }
 }
