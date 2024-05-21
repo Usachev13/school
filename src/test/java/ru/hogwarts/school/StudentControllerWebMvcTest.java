@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
@@ -14,6 +16,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.AvatarRepository;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
@@ -28,6 +32,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = StudentController.class)
+@AutoConfigureMockMvc
 public class StudentControllerWebMvcTest {
 
     @Autowired
@@ -35,15 +40,14 @@ public class StudentControllerWebMvcTest {
 
     @MockBean
     private StudentRepository studentRepository;
-
+    @MockBean
+    private AvatarRepository avatarRepository;
+    @MockBean
+    private FacultyRepository facultyRepository;
     @SpyBean
     private StudentService studentService;
-
-    @MockBean
+    @SpyBean
     private FacultyService facultyService;
-
-    @MockBean
-    private StudentService studentServiceService;
 
     @InjectMocks
     private StudentController studentController;
@@ -102,7 +106,7 @@ public class StudentControllerWebMvcTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(student)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(100L))
                 .andExpect(jsonPath("$.name").value("name"))
                 .andExpect(jsonPath("$.age").value(25));
     }
@@ -127,12 +131,12 @@ public class StudentControllerWebMvcTest {
         f1.setFaculty(new Faculty(1L,"faculty","color"));
         when(studentRepository.findById(1L)).thenReturn(Optional.of(f1));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/findFaculty?id=1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student?id=1/faculty"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("faculty"))
                 .andExpect(jsonPath("$.color").value("color"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/findFaculty?id="))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student?id=/faculty"))
                 .andExpect(status().is(400));
     }
 }
