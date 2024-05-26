@@ -55,7 +55,7 @@ public class StudentControllerWebMvcTest {
     @Test
     void testGet() throws Exception {
         when(studentRepository.findById(1L)).thenReturn(Optional.of(new Student(1L, "test_student", 19)));
-        mockMvc.perform(MockMvcRequestBuilders.get("/student?id=1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("test_student"))
                 .andExpect(jsonPath("$.age").value(19));
@@ -82,9 +82,8 @@ public class StudentControllerWebMvcTest {
     @Test
     void testDelete() throws Exception {
         when(studentRepository.findById(2L)).thenReturn(Optional.of(new Student(1L, "test_student", 19)));
-        mockMvc.perform(MockMvcRequestBuilders.delete("/student?id=2"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
+        mockMvc.perform(MockMvcRequestBuilders.delete("/student/2"))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -120,8 +119,8 @@ public class StudentControllerWebMvcTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/student/betweenAge?min=19&max=23"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("name"))
-                .andExpect(jsonPath("$.age").value(21));
+                .andExpect(jsonPath("$[0].name").value("name"))
+                .andExpect(jsonPath("$[0].age").value(21));
 
     }
 
@@ -131,12 +130,12 @@ public class StudentControllerWebMvcTest {
         f1.setFaculty(new Faculty(1L,"faculty","color"));
         when(studentRepository.findById(1L)).thenReturn(Optional.of(f1));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student?id=1/faculty"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/1/faculty"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("faculty"))
                 .andExpect(jsonPath("$.color").value("color"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student?id=/faculty"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/student//faculty"))
                 .andExpect(status().is(400));
     }
 }

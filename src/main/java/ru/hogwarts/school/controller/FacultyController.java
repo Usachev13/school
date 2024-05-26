@@ -60,7 +60,7 @@ public class FacultyController {
 
     }
     @GetMapping("{id}/students")
-    public List<Student> getStudentByFaculty(Long id){
+    public List<Student> getStudentByFaculty(@PathVariable Long id){
         return service.findFaculty(id).getStudents();
         
     }

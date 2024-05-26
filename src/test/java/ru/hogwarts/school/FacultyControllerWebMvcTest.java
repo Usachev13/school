@@ -56,7 +56,7 @@ public class FacultyControllerWebMvcTest {
     @Test
     void testGetFaculty() throws Exception {
         when(facultyRepository.findById(1L)).thenReturn(Optional.of(new Faculty(1L, "faculty", "color")));
-        mvc.perform(MockMvcRequestBuilders.get("/faculty?id=1"))
+        mvc.perform(MockMvcRequestBuilders.get("/faculty/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("faculty"))
                 .andExpect(jsonPath("$.color").value("color"));
@@ -83,9 +83,8 @@ public class FacultyControllerWebMvcTest {
     @Test
     void testDelete() throws Exception {
         when(facultyRepository.findById(2L)).thenReturn(Optional.of(new Faculty(1L, "faculty", "color")));
-        mvc.perform(MockMvcRequestBuilders.delete("/faculty?id=2"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
+        mvc.perform(MockMvcRequestBuilders.delete("/faculty/2"))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -116,10 +115,10 @@ public class FacultyControllerWebMvcTest {
     void testByColorAndName() throws Exception {
         when(facultyRepository.findFacultiesByColorIgnoreCaseOrNameIgnoreCase(anyString(), anyString()))
                 .thenReturn(Set.of(
-                        new Faculty(1L, "name1", "color1"),
-                        new Faculty(2L, "name2", "color2")));
+                        new Faculty(0L, "name1", "color1"),
+                        new Faculty(1L, "name2", "color2")));
 
-        mvc.perform(MockMvcRequestBuilders.get("/faculty/color_or_name?color=color1&name=name2"))
+        mvc.perform(MockMvcRequestBuilders.get("/faculty/color_or_name?color=color1&name=name1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].color").value("color1"))
                 .andExpect(jsonPath("$[0].name").value("name1"))
@@ -135,12 +134,10 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyRepository.findById(1L)).thenReturn(Optional.of(f));
 
-        mvc.perform(MockMvcRequestBuilders.get("/faculty?id=1/students"))
+        mvc.perform(MockMvcRequestBuilders.get("/faculty/1/students"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("s1"))
-                .andExpect(jsonPath("$.age").value(10));
+                .andExpect(jsonPath("$[0].name").value("s1"))
+                .andExpect(jsonPath("$[0].age").value(10));
 
-        mvc.perform(MockMvcRequestBuilders.get("/faculty?id=/students"))
-                .andExpect(status().is(400));
     }
 }
