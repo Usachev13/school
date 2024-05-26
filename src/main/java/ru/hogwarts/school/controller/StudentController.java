@@ -117,6 +117,19 @@ public class StudentController {
             is.transferTo(os);
         }
     }
+    @GetMapping(value = "/count-students-by-school")
+    public int getStudentsBySchool(){
+        return service.getStudentsBySchool();
+    }
+    @GetMapping(value = "/avg-students-age")
+    public int getAvgStudentsAge(){
+        return service.getAvgStudentsAge();
+    }
+    @GetMapping(value = "/get-last-students")
+    public List<Student> getLastStudents(){
+        return service.getLastStudents();
+    }
+
 
 }
 
