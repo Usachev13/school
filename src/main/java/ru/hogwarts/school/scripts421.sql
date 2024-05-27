@@ -1,4 +1,5 @@
 alter table student
+
     add constraint age_fix check (age > 15),
     ADD CONSTRAINT name_unique UNIQUE (name),
     alter column name set not null,

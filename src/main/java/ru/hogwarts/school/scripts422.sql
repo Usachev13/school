@@ -11,3 +11,4 @@ create table person (
                         licence boolean,
                         car_id int references car(id)
 );
+
