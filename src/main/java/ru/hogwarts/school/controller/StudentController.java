@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.io.IOException;
@@ -21,16 +22,21 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
 public class StudentController {
 
     private final StudentService service;
+    private final StudentRepository repository;
 
-    public StudentController(StudentService service) {
+    public StudentController(StudentService service, StudentRepository repository) {
         this.service = service;
+        this.repository = repository;
     }
+
+
 
 
     @PostMapping
@@ -130,6 +136,29 @@ public class StudentController {
         return service.getLastStudents();
     }
 
+    @GetMapping("/names-starting-with-a")
+    public ResponseEntity<List<String>> getStudentsNamesStartingWithA(){
+        List<Student> students = repository.findAll();
+
+        List<String> nameStartingWithA = students.stream()
+                .filter(student -> student.getName().toUpperCase().startsWith("А"))
+                .map(Student::getName)
+                .sorted()
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(nameStartingWithA);
+
+
+    }
+    @GetMapping("/avgAgeStudents")
+    public double getAvgAgeStudents(){
+        List<Student> students = repository.findAll();
+
+        return students.stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(Double.NaN);
+    }
 
 }
 

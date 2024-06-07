@@ -144,4 +144,5 @@ public class StudentService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
+
 }

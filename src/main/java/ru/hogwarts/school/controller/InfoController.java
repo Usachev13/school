@@ -11,7 +11,7 @@ public class InfoController {
 
     private final String port;
 
-    public InfoController(@Value("${Server.port}") String port) {
+    public InfoController(@Value("${server.port}") String port) {
         this.port = port;
     }
 
