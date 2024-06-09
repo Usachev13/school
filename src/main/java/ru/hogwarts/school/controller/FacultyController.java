@@ -65,21 +65,16 @@ public class FacultyController {
 
     @GetMapping("/longest_name_faculty")
     public String getLongestFaculty(){
-        List<Faculty> faculties = service.getAll();
-        return faculties.stream()
-                .map(Faculty::getName)
-                .max(Comparator.comparingInt(String::length))
-                .orElseThrow();
+        return service.getLongestFaculty();
     }
     @GetMapping("/integer")
     public Integer num(){
-        return Stream.iterate(1, a -> a +1) .limit(1_000_000) .reduce(0, (a, b) -> a + b );
+        return service.num();
 
 
     }
     @GetMapping("/integer-2")
-    public int integer() {
-        Stream<Integer> numbers = Stream.iterate(1, a -> a + 1).limit(1_000_000);
-        return numbers.parallel().reduce(0, Integer::sum);
+    public Integer integer() {
+        return service.integer();
     }
 }

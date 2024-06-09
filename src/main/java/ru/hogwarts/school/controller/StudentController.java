@@ -37,15 +37,14 @@ public class StudentController {
     }
 
 
-
-
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         Student createdStudent = service.createStudent(student);
         return ResponseEntity.ok(createdStudent);
     }
+
     @GetMapping
-    public List<Student> getAll(){
+    public List<Student> getAll() {
         return service.getAll();
     }
 
@@ -72,19 +71,22 @@ public class StudentController {
         service.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("age")
-    public ResponseEntity<Collection<Student>> getAllByAge(@RequestParam int age){
-        if(age > 0){
+    public ResponseEntity<Collection<Student>> getAllByAge(@RequestParam int age) {
+        if (age > 0) {
             return ResponseEntity.ok(service.getAllByAge(age));
         }
         return ResponseEntity.ok(Collections.emptyList());
 
     }
+
     @GetMapping("betweenAge")
-    public ResponseEntity<Collection<Student>> findStudentByBetweenAge(@RequestParam int min, @RequestParam int max){
+    public ResponseEntity<Collection<Student>> findStudentByBetweenAge(@RequestParam int min, @RequestParam int max) {
         return ResponseEntity.ok(service.findByAgeBetween(min, max));
 
     }
+
     @GetMapping("{id}/faculty")
     public Faculty findFaculty(@PathVariable Long id) {
         return service.findStudent(id).getFaculty();
@@ -98,6 +100,7 @@ public class StudentController {
         service.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping(value = "/{id}/avatar/preview")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
         Avatar avatar = service.findAvatar(id);
@@ -123,21 +126,24 @@ public class StudentController {
             is.transferTo(os);
         }
     }
+
     @GetMapping(value = "/count-students-by-school")
-    public int getStudentsBySchool(){
+    public int getStudentsBySchool() {
         return service.getStudentsBySchool();
     }
+
     @GetMapping(value = "/avg-students-age")
-    public int getAvgStudentsAge(){
+    public int getAvgStudentsAge() {
         return service.getAvgStudentsAge();
     }
+
     @GetMapping(value = "/get-last-students")
-    public List<Student> getLastStudents(){
+    public List<Student> getLastStudents() {
         return service.getLastStudents();
     }
 
     @GetMapping("/names-starting-with-a")
-    public ResponseEntity<List<String>> getStudentsNamesStartingWithA(){
+    public ResponseEntity<List<String>> getStudentsNamesStartingWithA() {
         List<Student> students = repository.findAll();
 
         List<String> nameStartingWithA = students.stream()
@@ -150,15 +156,11 @@ public class StudentController {
 
 
     }
+
     @GetMapping("/avgAgeStudents")
-    public double getAvgAgeStudents(){
-        List<Student> students = repository.findAll();
+    public double getAvgAgeStudents() {
+        return service.getAvgAgeStudents();
 
-        return students.stream()
-                .mapToDouble(Student::getAge)
-                .average()
-                .orElse(Double.NaN);
     }
-
 }
 

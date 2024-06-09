@@ -144,5 +144,13 @@ public class StudentService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
+    public double getAvgAgeStudents(){
+        List<Student> students = studentRepository.findAll();
+
+        return students.stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(Double.NaN);
+    }
 
 }

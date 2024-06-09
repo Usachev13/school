@@ -8,11 +8,9 @@ import ru.hogwarts.school.exceptions.NotFoundObject;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyService {
@@ -26,15 +24,15 @@ public class FacultyService {
 
     public Faculty createFaculty(Faculty faculty) {
         logger.info("Was invoked method for create faculty");
-       return facultyRepository.save(faculty);
+        return facultyRepository.save(faculty);
     }
 
     public Faculty findFaculty(Long id) {
         return facultyRepository.findById(id)
-                .orElseThrow(()->{
-            logger.error("Failed get id " + id);
-            return new NotFoundObject();
-        });
+                .orElseThrow(() -> {
+                    logger.error("Failed get id " + id);
+                    return new NotFoundObject();
+                });
     }
 
     public Faculty editFaculty(Faculty faculty) {
@@ -48,13 +46,30 @@ public class FacultyService {
         logger.info("Was invoked method for delete faculty");
         facultyRepository.deleteById(id);
     }
+
     public Collection<Faculty> getColorOrName(String color, String name) {
         logger.info("Was invoked method for find faculty");
         return facultyRepository.findFacultiesByColorIgnoreCaseOrNameIgnoreCase(color, name);
     }
-    public List<Faculty> getAll(){
+
+    public List<Faculty> getAll() {
         logger.info("Was invoked method for find all faculties");
         return new ArrayList<>(facultyRepository.findAll());
     }
 
+    public Integer num() {
+        return Stream.iterate(1, a -> a + 1).limit(1_000_000).reduce(0, (a, b) -> a + b);
+
+    }
+    public String getLongestFaculty(){
+        List<Faculty> faculties = facultyRepository.findAll();
+        return faculties.stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElseThrow();
+    }
+    public Integer integer() {
+        Stream<Integer> numbers = Stream.iterate(1, a -> a + 1).limit(1_000_000);
+        return numbers.parallel().reduce(0, Integer::sum);
+    }
 }
