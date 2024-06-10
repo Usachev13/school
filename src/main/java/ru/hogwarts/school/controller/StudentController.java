@@ -162,5 +162,13 @@ public class StudentController {
         return service.getAvgAgeStudents();
 
     }
+    @GetMapping("/print-parallel")
+    public void printParallel(){
+        service.printParallel();;
+    }
+    @GetMapping("/print-sync")
+    public void printSync(){
+        service.printSynchronize();
+    }
 }
 

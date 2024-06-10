@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import com.sun.tools.javac.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +152,48 @@ public class StudentService {
                 .mapToDouble(Student::getAge)
                 .average()
                 .orElse(Double.NaN);
+    }
+
+    public void printParallel(){
+
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println(students.get(0));
+        System.out.println(students.get(1));
+
+        Thread t1 = new Thread(() -> {
+                System.out.println(students.get(2));
+                System.out.println(students.get(3));
+        });
+        Thread t2 = new Thread(() ->{
+            System.out.println(students.get(4));
+            System.out.println(students.get(5));
+        });
+
+        t1.start();
+        t2.start();
+
+    }
+    public void printSynchronize(){
+        List<Student> students = studentRepository.findAll();
+
+        printSync(students.get(0));
+        printSync(students.get(1));
+
+        Thread t1 = new Thread(() -> {
+            printSync(students.get(2));
+            printSync(students.get(3));
+        });
+        Thread t2 = new Thread(() ->{
+            printSync(students.get(4));
+            printSync(students.get(5));
+        });
+
+        t1.start();
+        t2.start();
+    }
+    private synchronized void printSync(Student student){
+        System.out.println(student);
     }
 
 }
